@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <tr>
+      <th>打刻対象ID</th>
+      <th>打刻対象氏名</th>
+      <th>出勤打刻日時</th>
+      <th>退勤打刻日時</th>
+      <th>手当</th>
+      <th>最終更新者</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @attendances.present?%>
+  <% i = 1%>
+    <% @attendances.each do |attendance| %>
+      <tr>
+        <td><%= attendance.user_id %></td>
+        <td><%= attendance.user_id %></td>
+        <td><%= attendance.in %></td>
+        <td><%= attendance.out %></td>
+        <td><%= attendance.benefit %></td>
+        <td><%= attendance.updater %></td>
+      </tr>
+      <% i += 1%>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
