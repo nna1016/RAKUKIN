@@ -25,6 +25,7 @@
     border: solid 2px rgb(255, 72, 72);
     background-color: rgb(255, 255, 255);
     border-radius: 1px;
+    box-sizing: border-box;
 }
 .DashBoard-Top-TimeCard-Time{
     text-align: center;
@@ -68,9 +69,9 @@
     }
 }
  // 画面が小さい時
- @media screen and (max-width: 500px) {
+ @media screen and (max-width: 820px) {
     .DashBoard-Top-TimeCard{
-        width: 90%;
+        width: 95%;
     }
     .DashBoard-Top-TimeCard-Title{
         font-size: 40px;

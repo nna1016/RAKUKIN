@@ -71,3 +71,8 @@ gem 'font-awesome-rails'
 #Bootstrap4
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
+
+# QRコード
+gem 'rqrcode'
+gem 'rqrcode_png'
+gem 'chunky_png'
