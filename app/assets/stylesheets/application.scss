@@ -37,3 +37,42 @@ a :hover{
   text-decoration: none!important;
   font-weight: bold;
 }
+//タイトルとか
+.Page-Area{
+	margin: auto;
+	margin-top: 1vw;
+	width: 90%;
+	margin-bottom: 10px;
+ }
+ .Page-Area .Page-Title{
+
+	 font-size: 30px;
+ }
+ .Page-Area .Page-Text{
+	font-size: 15px;
+  margin-bottom: 10px;
+ }
+.Page-DashBord{
+  border: solid 2px #FF574D;
+  border-radius: 3px;
+  background-color: #FFF;
+  padding: 1vw;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.DashBoard{
+  border: solid 1px #A2A2A2;
+  width: 100%;
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 20px;
+  margin-top: 50px;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}

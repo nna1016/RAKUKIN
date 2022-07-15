@@ -19,3 +19,5 @@ RUN bundle install
 
 COPY . /rakukin
 # ローカルのmyapp配下のファイルをコンテナ内のmyapp配下にコピー
+
+ENV TZ Asia/Tokyo
