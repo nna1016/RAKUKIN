@@ -1,26 +1,55 @@
 version: '3'
-# docker-composeの書式のバージョンを指定します。(原則、最新を指定する)
-
 services:
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_USER: user
-      MYSQL_ROOT_PASSWORD: 1016nagi
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+  app:
+    build:
+      context: .
+# =========ローカルと本番切り替え===========
+    command: bundle exec puma -C config/puma.rb -e production
+    # command: bundle exec puma -C config/puma.rb
+# ======================================
 
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/rakukin/
+      - .:/rakukin
+      - public-data:/rakukin/public
+      - tmp-data:/rakukin/tmp
+      - log-data:/rakukin/log
+    networks:
+      - rakukin-network
+# =========ローカルと本番切り替え===========
+#    depends_on:
+#      - db
+
+#  db:
+#    image: mysql:5.7
+#    environment:
+#      MYSQL_ROOT_PASSWORD: 1016nagi
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: 1016nagi
+#      MYSQL_DATABASE: rakukin_development
+#    volumes:
+#      - db-data:/var/lib/mysql
+#    networks:
+#      - rakukin-network
+# ======================================
+  web:
+    build:
+      context: ./nginx_docker
+    volumes:
+      - public-data:/rakukin/public
+      - tmp-data:/rakukin/tmp
     ports:
-      - 3000:3000
+      - 80:80
     depends_on:
-      - db
+      - app
+    networks:
+      - rakukin-network
 
 volumes:
-  mysql_data:
+  public-data:
+  tmp-data:
+  log-data:
+  db-data:
+
+networks:
+  rakukin-network:
+    external: true
