@@ -1,3 +1,23 @@
+<script>
+    function twoDigit(num) {
+        let ret;
+        if (num < 10)
+            ret = "0" + num;
+        else
+            ret = num;
+        return ret;
+    }
+    function showClock() {
+        let nowTime = new Date();
+        let nowHour = twoDigit(nowTime.getHours());
+        let nowMin = twoDigit(nowTime.getMinutes());
+        let nowSec = twoDigit(nowTime.getSeconds());
+        let msg = nowHour + ":" + nowMin + ":" + nowSec;
+        document.getElementById("realtime").innerHTML = msg;
+    }
+    setInterval('showClock()', 1000);
+
+</script>
 <div class="DashBoard-Top-TimeCard">
 <div class="DashBoard-Top-TimeCard-Title">
 - Time Card -
@@ -6,22 +26,29 @@
 <%= qrcode format("%06d", current_user.id), {size: 2,  level: :h} %>
 </div>
 <div class="DashBoard-Top-TimeCard-Time">
-2022年7月7日 11:11:11
+<%= @date %> <a id="realtime"><%= @time.strftime("%H:%M:%S") %></a>
 </div>
 <div class="DashBoard-Top-TimeCard-Line double"></div>
 <div class="DashBoard-Top-TimeCard-Text">
-所属：本部（新生ビルテクノ株式会社 / 稲毛海浜公園プール）
+所属：<%= current_user.department %>（新生ビルテクノ株式会社 / 稲毛海浜公園プール）
 </div>
 <div class="DashBoard-Top-TimeCard-Line dashed"></div>
 <div class="DashBoard-Top-TimeCard-Text Title">
-氏名：石塚 凪
+氏名：<%= current_user.name %>
 </div>
 <div class="DashBoard-Top-TimeCard-Line dashed"></div>
-<div class="DashBoard-Top-TimeCard-Status Active">
-出勤中 ( 出勤打刻：2022/07/07 12:12:12 )
-</div>
-<div class="DashBoard-Top-TimeCard-Status">
-未出勤
-</div>
+<% if @attendanceMy.nil? %>
+    <div class="DashBoard-Top-TimeCard-Status">
+    未出勤
+    </div>
+<% elsif @attendanceMy.out.nil? %>
+    <div class="DashBoard-Top-TimeCard-Status Active">
+    出勤中 ( 出勤打刻：<%= @attendanceMy.in.strftime('%Y/%m/%d %H:%M:%S') %> )
+    </div>
+<% else %>
+    <div class="DashBoard-Top-TimeCard-Status Active">
+    退勤済 ( 退勤打刻：<%= @attendanceMy.out.strftime('%Y/%m/%d %H:%M:%S') %> )
+    </div>
+<% end %>
 </div>
 <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-link' %>
