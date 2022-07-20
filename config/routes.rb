@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root to: "home#index"
   get 'home/index'
   get 'attendances/attendanceBook'
+  delete 'attendances/attendanceDelete/:id' => 'attendances#attendanceDelete'
+  get 'attendances/attendanceEdit/:id' => 'attendances#attendanceEdit'
+  post 'attendances/attendanceUpdate'
   get 'attendances/auto'
   post 'attendances/success'
   get 'attendances/success_in'

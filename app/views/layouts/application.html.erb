@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Rakukin</title>
+    <title>RAKUKIN | クラウド型勤怠管理サービス</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag('favicon.ico') %>
   </head>
 
   <body>
+  <% unless current_page?(attendances_auto_path) %>
     <%= render 'devise/shared/header' %>
+  <% end %>
     <% if notice %>
       <p class="notice"><%= notice %></p>
       <% elsif alert %>

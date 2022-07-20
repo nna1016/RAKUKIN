@@ -1,0 +1,70 @@
+<div class="Page-Area">
+<div class="Page-Title">
+勤務打刻時間修正
+</div>
+<div class="Page-Text">
+対象の勤務時間打刻を修正可能です
+</div>
+<div class="DashBoard">
+<div class="DashBoard-Title">
+打刻修正
+</div>
+<%= form_with(model: @attendance, url: {controller: 'attendances', action: 'attendanceUpdate'}) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :id,:value =>@attendanceEdit.id %>
+  </div>
+  <div class="field">
+    <%= f.hidden_field :updater,:value =>current_user.name %>
+  </div>
+  <div class="form-group">
+    <%= f.label :出勤時刻 %><br />
+    <%= f.text_field :in, autofocus: false, class: "form-control",:value =>@attendanceEdit.in %>
+  </div>
+  <div class="form-group">
+    <%= f.label :退勤時刻 %><br />
+    <%= f.text_field :out, autofocus: false, class: "form-control",:value =>@attendanceEdit.out %>
+  </div>
+  <div class="form-group">
+  <%= f.submit "修正", class: 'Submit-btn' %>
+  </div>
+<% end %>
+</div>
+<div class="DashBoard">
+<div class="DashBoard-Title">
+打刻情報
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>打刻対象ID</th>
+      <th>打刻対象氏名</th>
+      <th>出勤打刻日時</th>
+      <th>退勤打刻日時</th>
+      <th>勤務時間</th>
+      <th>手当</th>
+      <th>最終更新者</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= format("%04d", @attendanceEdit.user_id) %></td>
+      <td><%= @attendanceEdit.updater %></td>
+      <% if @attendanceEdit.in.nil? %>
+      <td>打刻エラー</td>
+      <% else %>
+      <td><%= @attendanceEdit.in.strftime('%Y/%m/%d %H:%M:%S') %></td>
+      <% end %>
+      <% if @attendanceEdit.out.nil? %>
+      <td>打刻エラー</td>
+      <td>勤務中</td>
+      <% else %>
+      <td><%= @attendanceEdit.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
+      <td><%= sprintf("%.1f",(@attendanceEdit.out - @attendanceEdit.in).floor / 60 /60.to_f) %></td>
+      <% end %>
+      <td><%= @attendanceEdit.benefit.presence || 0 %></td>
+      <td><%= @attendanceEdit.updater %></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>

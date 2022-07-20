@@ -2,6 +2,18 @@ class AttendancesController < ApplicationController
     def attendanceBook
         @attendacebook = Attendance.all
     end
+    def attendanceEdit
+      @attendanceEdit = Attendance.find_by(id: params[:id])
+    end
+    def attendanceUpdate
+      @item = Attendance.find_by(id: params[:id])
+      @item.update(in: params[:in],out: params[:out], updater: params[:updater])
+      redirect_to attendances_attendanceBook_path
+    end
+    def attendanceDelete
+      Attendance.find_by(id: params[:id]).delete
+      redirect_to attendances_attendanceBook_path
+    end
     def success
         user = Attendance.order("id DESC").find_by(user_id: params[:user_id])
         staff = User.find_by(id: params[:user_id])
