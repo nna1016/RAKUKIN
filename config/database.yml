@@ -50,18 +50,22 @@ test:
 #
 production:
   <<: *default
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOSTNAME'] %>
 # =========ローカル切り替え===========
 #  database: rakukin_production
 #  username: rakukin
 #  password: <%= ENV['RAKUKIN_DATABASE_PASSWORD'] %>
 # ======================================
 # =========本番切り替え===========
-  database: <%= ENV['DB_DATABASE'] %>
-  adapter: mysql2
-  encoding: utf8mb4
-  charset: utf8mb4
-  collation: utf8mb4_general_ci
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+#  database: <%= ENV['DB_DATABASE'] %>
+#  adapter: mysql2
+#  encoding: utf8mb4
+#  charset: utf8mb4
+#  collation: utf8mb4_general_ci
+#  host: <%= ENV['DB_HOST'] %>
+#  username: <%= ENV['DB_USERNAME'] %>
+#  password: <%= ENV['DB_PASSWORD'] %>
 # ======================================
