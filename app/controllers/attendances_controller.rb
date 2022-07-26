@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
     def attendanceBook
-        @attendacebook = Attendance.all
+        @attendacebook = Attendance.joins(:user).select('attendances.*, users.name')
     end
     def attendanceEdit
       @attendanceEdit = Attendance.find_by(id: params[:id])

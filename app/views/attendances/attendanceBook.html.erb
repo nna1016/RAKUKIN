@@ -25,7 +25,7 @@
     <% @attendacebook.each do |attendance| %>
       <tr>
         <td><%= format("%04d", attendance.user_id) %></td>
-        <td><%= attendance.updater %></td>
+        <td><%= attendance.name %></td>
         <% if attendance.in.nil? %>
         <td>打刻エラー</td>
         <% else %>
