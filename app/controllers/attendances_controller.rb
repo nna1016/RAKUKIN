@@ -2,6 +2,21 @@ class AttendancesController < ApplicationController
     def attendanceBook
         @attendacebook = Attendance.joins(:user).select('attendances.*, users.name')
     end
+    def attendanceUser
+      @showUser = User.find_by(id: params[:id])
+      if params[:start].nil? || params[:end].nil?
+        @attendaceuser = Attendance.where(user_id: params[:id])
+      else
+        @attendaceuser = Attendance.where(user_id: params[:id], date: params[:start]..params[:end])
+        require 'date'
+        day = params[:start] 
+        @dayStart = params[:start] 
+        @day = day.to_date
+        endDay = params[:end]
+        @dayEnd = params[:end]
+        @endDay = endDay.to_date
+      end
+    end
     def attendanceEdit
       @attendanceEdit = Attendance.find_by(id: params[:id])
     end

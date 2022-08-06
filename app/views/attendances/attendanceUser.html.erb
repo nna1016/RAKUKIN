@@ -1,0 +1,76 @@
+<div class="Page-Area">
+<div class="Page-Title">
+<%= params[:end].slice!5..6 %>月 支払い勤務実績表
+</div>
+<div class="Page-Text">
+<%= @showUser.name %>様の勤務時間打刻が確認可能です<br>
+</div>
+<div class="DashBoard">
+<table class="table">
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>出勤時間</th>
+      <th>退勤時間</th>
+      <th>労働時間</th>
+      <th>残業時間</th>
+      <th>休憩時間</th>
+      <th>最終更新者</th>
+      <th>修正・取消</th>
+    </tr>
+  </thead>
+  <% if @attendaceuser.present?%>
+  <% day = @day  %>
+  <% endDay = @endDay  %>
+  <% while endDay >= day do %>
+    <tbody>
+    <td><%= day %></td>
+
+  <% j = 1%>
+    <% @attendaceuser.each do |attendance| %>
+      <% if attendance.date == day%>
+        <% touchTime = sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f).to_f %>
+        <% if touchTime < 6.to_f && touchTime > 5.to_f%>
+        <% lestTime = 0.5.to_f%>
+        <%elsif touchTime > 5.9.to_f%>
+        <% lestTime = 1.to_f%>
+        <%else%>
+        <% lestTime = 0.to_f%>
+        <% end %>
+        <% jobTime = touchTime.to_f - lestTime.to_f%>
+        <% if attendance.in.nil? %>
+        <td>打刻エラー</td>
+        <% else %>
+        <td><%= attendance.in.strftime('%Y/%m/%d %H:%M:%S') %></td>
+        <% end %>
+        <% if attendance.out.nil? %>
+        <td>打刻エラー</td>
+        <td>勤務中</td>
+        <% else %>
+        <td><%= attendance.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
+        <% if jobTime.to_f > 8.to_f %>
+        <td><%= jobTime - (jobTime.to_f - 8.to_f) %></td>
+        <td><%= jobTime.to_f - 8.to_f %></td>
+        <%else%>
+        <td><%= jobTime %></td>
+        <td>0</td>
+        <% end %>
+        <% end %>
+        <td><%= lestTime %></td>
+        <td><%= attendance.updater.presence || '---' %></td>
+        <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
+      <% end %>
+              <% j += 1%>
+        <% lestTime = 0%>
+        <% touchTime = 0 %>
+        <% jobTime = 0 %>
+    <% end %>
+    
+    </tbody>
+    <% day += 1 %>
+
+  <% end %>
+  <% end %>
+</table>
+</div>
+</div>
