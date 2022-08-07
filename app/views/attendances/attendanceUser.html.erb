@@ -29,7 +29,7 @@
   <% j = 1%>
     <% @attendaceuser.each do |attendance| %>
       <% if attendance.date == day%>
-        <% touchTime = sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f).to_f %>
+        <% touchTime = (sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f).to_f).presence || '0' %>
         <% if touchTime < 6.to_f && touchTime > 5.to_f%>
         <% lestTime = 0.5.to_f%>
         <%elsif touchTime > 5.9.to_f%>
@@ -57,7 +57,7 @@
         <% end %>
         <% end %>
         <td><%= lestTime %></td>
-        <td><%= attendance.updater.presence || '---' %></td>
+        <td><%= attendance.updater.presence || '0' %></td>
         <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
       <% end %>
               <% j += 1%>

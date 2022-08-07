@@ -36,7 +36,7 @@
         <td>勤務中</td>
         <% else %>
         <td><%= attendance.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
-        <td><%= sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f) %></td>
+        <td><%= (sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f)).presence || '0' %></td>
         <% end %>
         <td><%= attendance.benefit.presence || 0 %></td>
         <td><%= attendance.updater %></td>
