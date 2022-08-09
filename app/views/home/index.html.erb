@@ -51,4 +51,14 @@
     </div>
 <% end %>
 </div>
+
+<div class="Dashboard-DoubleGroup">
+    <div class="Select-botun-home">
+    <%= link_to("勤怠確認", "attendances/attendanceUser/#{current_user.id}/2022-07-11/2022-08-10") %>
+    </div>
+    <div class="Select-botun-home">
+    <%= link_to "勤怠マスタ", attendances_attendanceBook_path %>
+    </div>
+</div>
+
 <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-link' %>

@@ -1,8 +1,13 @@
 class AttendancesController < ApplicationController
     def attendanceBook
+      if current_user.department == "本部"
         @attendacebook = Attendance.joins(:user).select('attendances.*, users.name')
+      else
+        redirect_to root_path
+      end
     end
     def attendanceUser
+      if current_user.id == params[:id] || current_user.department == "本部"
       nowTime = Time.now.to_s(:db).to_datetime
       @nowTime = nowTime.strftime('%Y/%m/%d %H:%M:%S')
       @showUser = User.find_by(id: params[:id])
@@ -19,10 +24,17 @@ class AttendancesController < ApplicationController
         @dayEndM = params[:end]
         @endDay = endDay.to_date
       end
+      else
+        redirect_to root_path
+      end
     end
     def attendanceEdit
+      if  current_user.department == "本部"
       @attendanceEdit = Attendance.find_by(id: params[:id])
       session[:refererID] = request.referer
+      else
+        redirect_to root_path
+      end
     end
     def attendanceUpdate
       @item = Attendance.find_by(id: params[:id])
@@ -59,9 +71,13 @@ class AttendancesController < ApplicationController
       params.permit(:user_id)
     end
     def auto
+      if  current_user == "本部"
       youbi = %w[日曜日 月曜日 火曜日 水曜日 木曜日 金曜日 土曜日 日曜日]
       @date = Date.current.strftime("%Y年 %m月 %d日") + "( " +youbi[Date.today.wday] + " )"
       @time = Time.now
+      else
+        redirect_to root_path
+      end
     end
     def success_in
         youbi = %w[日曜日 月曜日 火曜日 水曜日 木曜日 金曜日 土曜日 日曜日]
