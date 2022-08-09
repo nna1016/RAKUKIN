@@ -1,6 +1,6 @@
 <div class="Page-Area">
 <div class="Page-Title">
-<%= params[:end].slice!5..6 %>月 支払い勤務実績表
+<%= @dayEndM.slice!5..6 %>月 支払い勤務実績表
 </div>
 <div class="Page-Text">
 <%= @showUser.name %>様の勤務時間打刻が確認可能です<br>
@@ -29,7 +29,13 @@
   <% j = 1%>
     <% @attendaceuser.each do |attendance| %>
       <% if attendance.date == day%>
-        <% touchTime = (sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f).to_f).presence || '0' %>
+      <% if attendance.out.nil?%>
+        <%attendanceOut = @nowTime %>
+      <%else%>
+        <%attendanceOut = attendance.out.strftime('%Y/%m/%d %H:%M:%S') %>
+        <%attendanceOutValue = attendance.out %>
+      <%end%>
+        <% touchTime = sprintf("%.1f",(attendanceOutValue.to_f - attendance.in.to_f).floor / 60 /60.to_f).to_f %>
         <% if touchTime < 6.to_f && touchTime > 5.to_f%>
         <% lestTime = 0.5.to_f%>
         <%elsif touchTime > 5.9.to_f%>
@@ -43,11 +49,11 @@
         <% else %>
         <td><%= attendance.in.strftime('%Y/%m/%d %H:%M:%S') %></td>
         <% end %>
-        <% if attendance.out.nil? %>
+        <% if attendanceOut.nil? %>
         <td>打刻エラー</td>
         <td>勤務中</td>
         <% else %>
-        <td><%= attendance.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
+        <td><%= attendanceOut %></td>
         <% if jobTime.to_f > 8.to_f %>
         <td><%= jobTime - (jobTime.to_f - 8.to_f) %></td>
         <td><%= jobTime.to_f - 8.to_f %></td>
@@ -57,7 +63,7 @@
         <% end %>
         <% end %>
         <td><%= lestTime %></td>
-        <td><%= attendance.updater.presence || '0' %></td>
+        <td><%= attendance.updater.presence || 0 %></td>
         <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
       <% end %>
               <% j += 1%>

@@ -35,8 +35,10 @@
         <td>打刻エラー</td>
         <td>勤務中</td>
         <% else %>
+        <%attendanceIn = attendance.in.presence || 0 %>
+        <%attendanceOut = attendance.out.presence || 0 %>
         <td><%= attendance.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
-        <td><%= (sprintf("%.1f",(attendance.out - attendance.in).floor / 60 /60.to_f)).presence || '0' %></td>
+        <td><%= (sprintf("%.1f",(attendanceOut - attendanceIn).floor / 60 /60.to_f)) %></td>
         <% end %>
         <td><%= attendance.benefit.presence || 0 %></td>
         <td><%= attendance.updater %></td>

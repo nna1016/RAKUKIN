@@ -3,6 +3,8 @@ class AttendancesController < ApplicationController
         @attendacebook = Attendance.joins(:user).select('attendances.*, users.name')
     end
     def attendanceUser
+      nowTime = Time.now.to_s(:db).to_datetime
+      @nowTime = nowTime.strftime('%Y/%m/%d %H:%M:%S')
       @showUser = User.find_by(id: params[:id])
       if params[:start].nil? || params[:end].nil?
         @attendaceuser = Attendance.where(user_id: params[:id])
@@ -14,16 +16,18 @@ class AttendancesController < ApplicationController
         @day = day.to_date
         endDay = params[:end]
         @dayEnd = params[:end]
+        @dayEndM = params[:end]
         @endDay = endDay.to_date
       end
     end
     def attendanceEdit
       @attendanceEdit = Attendance.find_by(id: params[:id])
+      session[:refererID] = request.referer
     end
     def attendanceUpdate
       @item = Attendance.find_by(id: params[:id])
       @item.update(in: params[:in],out: params[:out], updater: params[:updater])
-      redirect_to request.referer
+      redirect_to session[:refererID]
     end
     def attendanceDelete
       Attendance.find_by(id: params[:id]).delete
