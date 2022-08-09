@@ -15,6 +15,7 @@
       <th>労働時間</th>
       <th>残業時間</th>
       <th>休憩時間</th>
+      <th>見込み給与</th>
       <th>最終更新者</th>
       <th>修正・取消</th>
     </tr>
@@ -22,6 +23,7 @@
   <% if @attendaceuser.present?%>
   <% day = @day  %>
   <% endDay = @endDay  %>
+  <% totalWage = 0%>
   <% while endDay >= day do %>
     <tbody>
     <td><%= day %></td>
@@ -63,6 +65,12 @@
         <% end %>
         <% end %>
         <td><%= lestTime %></td>
+        <% if jobTime.to_f > 0.to_f %>
+        <td>約<%= (((jobTime.to_f - lestTime.to_f ) * @showUser.wage.to_f) + (jobTime.to_f - 8.to_f) * (1.25.to_f * @showUser.wage.to_f)).to_i %>円</td>
+        <% totalWage += (((jobTime.to_f - lestTime.to_f ) * @showUser.wage.to_f) + (jobTime.to_f - 8.to_f) * (1.25.to_f * @showUser.wage.to_f)).to_i%>
+        <% else %>
+        <td>0円</td>
+        <% end %>
         <td><%= attendance.updater.presence || 0 %></td>
         <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
       <% end %>
@@ -77,6 +85,15 @@
 
   <% end %>
   <% end %>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>見込み給与合計</td>
+  <td>約<%= totalWage %>円</td>
 </table>
 </div>
 </div>

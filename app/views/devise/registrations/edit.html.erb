@@ -20,6 +20,11 @@
         <%= f.select :department, options_for_select([['所属を選択', 'その他'], ['本部', '本部'],['OB', 'OB'], ['OC', 'OC'], ['L', 'L'], ['R', 'R']]), class: "form-control" %>
       </div>
 
+      <div class="form-group">
+        <%= f.label :時給 %><br />
+        <%= f.text_field :wage, autofocus: false, class: "form-control" %>
+      </div>
+
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <%= t('.currently_waiting_confirmation_for_email', email: resource.unconfirmed_email) %>
       <% end %>
