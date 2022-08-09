@@ -23,6 +23,12 @@
   <% if @attendacebook.present?%>
   <% i = 1%>
     <% @attendacebook.each do |attendance| %>
+      <% if attendance.out.nil?%>
+        <%attendanceOut = @nowTime %>
+      <%else%>
+        <%attendanceOut = attendance.out.strftime('%Y/%m/%d %H:%M:%S') %>
+        <%attendanceOutValue = attendance.out %>
+      <%end%>
       <tr>
         <td><%= format("%04d", attendance.user_id) %></td>
         <td><%= attendance.name %></td>
@@ -35,10 +41,8 @@
         <td>打刻エラー</td>
         <td>勤務中</td>
         <% else %>
-        <%attendanceIn = attendance.in.presence || 0 %>
-        <%attendanceOut = attendance.out.presence || 0 %>
         <td><%= attendance.out.strftime('%Y/%m/%d %H:%M:%S') %></td>
-        <td><%= (sprintf("%.1f",(attendanceOut - attendanceIn).floor / 60 /60.to_f)) %></td>
+        <td><%= (sprintf("%.1f",(attendanceOutValue.to_f - attendance.in.to_f).floor / 60 /60.to_f)) %></td>
         <% end %>
         <td><%= attendance.benefit.presence || 0 %></td>
         <td><%= attendance.updater %></td>
