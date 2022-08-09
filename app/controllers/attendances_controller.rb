@@ -71,13 +71,9 @@ class AttendancesController < ApplicationController
       params.permit(:user_id)
     end
     def auto
-      if  current_user == "本部"
       youbi = %w[日曜日 月曜日 火曜日 水曜日 木曜日 金曜日 土曜日 日曜日]
       @date = Date.current.strftime("%Y年 %m月 %d日") + "( " +youbi[Date.today.wday] + " )"
       @time = Time.now
-      else
-        redirect_to root_path
-      end
     end
     def success_in
         youbi = %w[日曜日 月曜日 火曜日 水曜日 木曜日 金曜日 土曜日 日曜日]
