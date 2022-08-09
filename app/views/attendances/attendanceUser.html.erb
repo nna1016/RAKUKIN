@@ -31,55 +31,56 @@
   <% j = 1%>
     <% @attendaceuser.each do |attendance| %>
       <% if attendance.date == day%>
-      <% if attendance.out.nil?%>
-        <%attendanceOut = @nowTime %>
-      <%else%>
-        <%attendanceOut = attendance.out.strftime('%Y/%m/%d %H:%M:%S') %>
-        <%attendanceOutValue = attendance.out %>
-      <%end%>
+        <% if attendance.out.nil?%>
+          <%attendanceOut = @nowTime %>
+        <%else%>
+          <%attendanceOut = attendance.out.strftime('%Y/%m/%d %H:%M:%S') %>
+          <%attendanceOutValue = attendance.out %>
+        <%end%>
         <% touchTime = sprintf("%.1f",(attendanceOutValue.to_f - attendance.in.to_f).floor / 60 /60.to_f).to_f %>
         <% if touchTime < 6.to_f && touchTime > 5.to_f%>
-        <% lestTime = 0.5.to_f%>
+          <% lestTime = 0.5.to_f%>
         <%elsif touchTime > 5.9.to_f%>
-        <% lestTime = 1.to_f%>
+          <% lestTime = 1.to_f%>
         <%else%>
-        <% lestTime = 0.to_f%>
+          <% lestTime = 0.to_f%>
         <% end %>
         <% jobTime = touchTime.to_f - lestTime.to_f%>
         <% if attendance.in.nil? %>
-        <td>打刻エラー</td>
+          <td>打刻エラー</td>
         <% else %>
-        <td><%= attendance.in.strftime('%Y/%m/%d %H:%M:%S') %></td>
+          <td><%= attendance.in.strftime('%Y/%m/%d %H:%M:%S') %></td>
         <% end %>
         <% if attendanceOut.nil? %>
-        <td>打刻エラー</td>
-        <td>勤務中</td>
+          <td>打刻エラー</td>
+          <td>勤務中</td>
         <% else %>
-        <td><%= attendanceOut %></td>
-        <% if jobTime.to_f > 8.to_f %>
-        <td><%= jobTime - (jobTime.to_f - 8.to_f) %></td>
-        <td><%= jobTime.to_f - 8.to_f %></td>
-        <%else%>
-        <td><%= jobTime %></td>
-        <td>0</td>
-        <% end %>
+          <td><%= attendanceOut %></td>
+          <% if jobTime.to_f > 8.to_f %>
+            <td><%= jobTime - (jobTime.to_f - 8.to_f) %></td>
+            <td><%= jobTime.to_f - 8.to_f %></td>
+            <% overTime = jobTime.to_f - 8.to_f %>
+          <%else%>
+            <td><%= jobTime %></td>
+            <td>0</td>
+            <% overTime = 0.to_f %>
+          <% end %>
         <% end %>
         <td><%= lestTime %></td>
         <% if jobTime.to_f > 0.to_f %>
-        <td>約<%= (((jobTime.to_f - lestTime.to_f ) * @showUser.wage.to_f) + (jobTime.to_f - 8.to_f) * (1.25.to_f * @showUser.wage.to_f)).to_i %>円</td>
-        <% totalWage += (((jobTime.to_f - lestTime.to_f ) * @showUser.wage.to_f) + (jobTime.to_f - 8.to_f) * (1.25.to_f * @showUser.wage.to_f)).to_i%>
+        <td>約<%= (((jobTime.to_f  - overTime ) * @showUser.wage.to_f) + overTime * (1.25.to_f * @showUser.wage.to_f)).to_i %>円</td>
+        <% totalWage += (((jobTime.to_f  - overTime ) * @showUser.wage.to_f) + overTime * (1.25.to_f * @showUser.wage.to_f)).to_i%>
         <% else %>
         <td>0円</td>
         <% end %>
         <td><%= attendance.updater.presence || 0 %></td>
         <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
-      <% end %>
+        <% end %>
               <% j += 1%>
         <% lestTime = 0%>
         <% touchTime = 0 %>
         <% jobTime = 0 %>
     <% end %>
-    
     </tbody>
     <% day += 1 %>
 
