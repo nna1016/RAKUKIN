@@ -1,3 +1,7 @@
+<%if current_user.id == @showUser.id || current_user.department == "本部"%>
+<%else%>
+  <meta http-equiv="refresh" content="0;URL=http://52.68.140.65/">
+<%end%>
 <div class="Page-Area">
 <div class="Page-Title">
 <%= @dayEndM.slice!5..6 %>月 支払い勤務実績表
@@ -74,7 +78,11 @@
         <td>0円</td>
         <% end %>
         <td><%= attendance.updater.presence || 0 %></td>
+        <%if current_user.department == "本部"%>
         <td><%= link_to("修正", "/attendances/attendanceEdit/#{attendance.id}",class:"btn btn-sm btn-primary") %> <%= link_to("取消", "/attendances/attendanceDelete/#{attendance.id}",class:"btn btn-sm btn-danger", method: :delete) %></td>
+        <%else%>
+        <td></td>
+        <%end%>
         <% end %>
               <% j += 1%>
         <% lestTime = 0%>

@@ -7,7 +7,6 @@ class AttendancesController < ApplicationController
       end
     end
     def attendanceUser
-      if current_user.id == params[:id] || current_user.department == "本部"
       nowTime = Time.now.to_s(:db).to_datetime
       @nowTime = nowTime.strftime('%Y/%m/%d %H:%M:%S')
       @showUser = User.find_by(id: params[:id])
@@ -23,9 +22,6 @@ class AttendancesController < ApplicationController
         @dayEnd = params[:end]
         @dayEndM = params[:end]
         @endDay = endDay.to_date
-      end
-      else
-        redirect_to root_path
       end
     end
     def attendanceEdit
