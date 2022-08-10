@@ -32,6 +32,17 @@ class AttendancesController < ApplicationController
         redirect_to root_path
       end
     end
+    def attendanceNew
+      if  current_user.department == "本部"
+      session[:refererID] = request.referer
+      else
+        redirect_to root_path
+      end
+    end
+    def attendanceCreate
+      Attendance.create(user_id: params[:user_id], in: params[:in], out: params[:out], updater: params[:updater], date: params[:dateTo])
+      redirect_to root_path
+    end
     def attendanceUpdate
       @item = Attendance.find_by(id: params[:id])
       @item.update(in: params[:in],out: params[:out], updater: params[:updater])
