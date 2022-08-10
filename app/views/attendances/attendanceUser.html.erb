@@ -14,6 +14,9 @@
   <thead>
     <tr>
       <th>日付</th>
+      <%if current_user.department == "本部"%>
+      <th>追加</th>
+      <% end %>
       <th>出勤時間</th>
       <th>退勤時間</th>
       <th>労働時間</th>
@@ -31,7 +34,9 @@
   <% while endDay >= day do %>
     <tbody>
     <td><%= day %></td>
-
+    <%if current_user.department == "本部"%>
+    <td><%= link_to("+", "/attendances/attendanceNew/#{@showUser.id}/#{day}",class:"btn btn-sm btn-primary") %></td>
+    <% end %>
   <% j = 1%>
     <% @attendaceuser.each do |attendance| %>
       <% if attendance.date == day%>
@@ -88,7 +93,6 @@
         <% lestTime = 0%>
         <% touchTime = 0 %>
         <% jobTime = 0 %>
-
     <% end %>
     </tbody>
     <% day += 1 %>
