@@ -8,4 +8,11 @@ class HomeController < ApplicationController
     @date = Date.current.strftime("%Y年 %m月 %d日")
     @time = Time.now
   end
+  def staffMaster
+    if  current_user.department == "本部"
+    @staffs = User.all
+    else
+      redirect_to root_path
+    end
+  end
 end

@@ -1,0 +1,43 @@
+<div class="Page-Area">
+<div class="Page-Title">
+勤務打刻時間マスター
+</div>
+<div class="Page-Text">
+全従業員の勤務時間打刻が確認可能です
+</div>
+<div class="DashBoard">
+<table class="table">
+  <thead>
+    <tr>
+      <th>UserID</th>
+      <th>StaffID</th>
+      <th>所属</th>
+      <th>氏名</th>
+      <th>時給</th>
+      <th>最終ログイン</th>
+      <th>ログイン回数</th>
+      <th>詳細</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @staffs.present?%>
+  <% i = 1%>
+    <% @staffs.each do |staff| %>
+      <tr>
+      <td><%= staff.id %></td>
+      <td>未設定</td>
+      <td><%= staff.department %></td>
+      <td><%= staff.name %></td>
+      <td><%= staff.wage %></td>
+      <td><%= staff.last_sign_in_at %></td>
+      <td><%= staff.sign_in_count %></td>
+      <td><%= link_to("勤務確認", "/attendances/attendanceUser/#{staff.id}/2022-07-11/2022-08-10",class:"btn btn-sm btn-primary") %></td>
+      </tr>
+      <% i += 1%>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+</div>
+</div>
+<%= link_to "アカウント情報編集", edit_user_registration_path, class: "user-edit-btn" %>
