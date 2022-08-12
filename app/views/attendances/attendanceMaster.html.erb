@@ -1,0 +1,67 @@
+<div class="Page-Area">
+  <div class="Page-Title">
+  給与マスター
+  </div>
+  <div class="Page-Text">
+  以下期間の給与マスターを確認できます。<br>
+  <% if !(params[:start].nil?) %>
+  対象期間：<%= params[:start] %> 〜 <%= params[:end] %><br>
+  <%end%>
+  <% if !(params[:dep].nil?) %>
+  部署：<%= params[:dep] %>
+  <%end%>
+  </div>
+
+<div class="DashBoard">
+<table class="table">
+  <thead>
+    <th>氏名</th>
+    <% day = @day  %>
+    <% endDay = @endDay  %>
+    <% totalWage = 0%>
+    <% while endDay >= day do %>
+    <th> <%= day.strftime('%m/%d') %> </th>
+    <% day += 1 %>
+    <% end %>
+    <th>残業時間</th>
+  </thead>
+  <tbody>
+    <% i = 1%>
+    <% @userList.each do |user| %>
+    <% totalJob = 0 %>
+    <td><%= user.name %></td>
+    <% a = 1%>
+    <% @attendanceData.each do |attendance| %>
+      <% day = @day %>
+      <% while endDay >= day do %>
+      <% if attendance.date == day && attendance.user_id == user.id && !(attendance.out.nil?) %>
+        <% touchTime = sprintf("%.1f",(attendance.out.to_f - attendance.in.to_f).floor / 60 /60.to_f).to_f %>
+        <% if touchTime < 6.to_f && touchTime > 5.to_f%>
+          <% lestTime = 0.5.to_f%>
+        <%elsif touchTime > 5.9.to_f%>
+          <% lestTime = 1.to_f%>
+        <%else%>
+        <% lestTime = 0.to_f%>
+      <% end %>
+      <% jobTime = touchTime.to_f - lestTime.to_f%>
+      <% if jobTime.to_f > 8.to_f %>
+        <td><%= jobTime - (jobTime.to_f - 8.to_f) %></td>
+        <% overTime = jobTime.to_f - 8.to_f %>
+      <%else%>
+        <td><%= jobTime %></td>
+        <% overTime = 0.to_f %>
+      <% end %>
+      <% totalJob = overTime + totalJob %>
+      <% end %>
+      <% day += 1 %>
+      <% end %>
+      <td></td>
+    <% end %>
+    <td><%= totalJob %></td>
+  </tbody>
+  <% end %>
+
+  </tbody>
+</table>
+
+</div>

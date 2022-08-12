@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root to: "home#index"
   get 'home/index'
   get 'home/staffMaster'
+  get 'attendances/attendanceMaster/:start/:end' => 'attendances#attendanceMaster'
+  get 'attendances/attendanceMaster/:start/:end/:dep' => 'attendances#attendanceMaster'
   get 'attendances/attendanceUser/:id/:start/:end' => 'attendances#attendanceUser'
   get 'attendances/attendanceUser/:id' => 'attendances#attendanceUser'
   get 'attendances/attendanceBook'

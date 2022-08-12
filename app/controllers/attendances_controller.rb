@@ -24,6 +24,24 @@ class AttendancesController < ApplicationController
         @endDay = endDay.to_date
       end
     end
+    def attendanceMaster
+      nowTime = Time.now.to_s(:db).to_datetime
+      @nowTime = nowTime.strftime('%Y/%m/%d %H:%M:%S')
+      @userList = User.all
+      if params[:start].nil? || params[:end].nil?
+        @attendanceData = Attendance.all
+      else
+        @attendanceData = Attendance.where(date: params[:start]..params[:end])
+        require 'date'
+        day = params[:start] 
+        @dayStart = params[:start] 
+        @day = day.to_date
+        endDay = params[:end]
+        @dayEnd = params[:end]
+        @dayEndM = params[:end]
+        @endDay = endDay.to_date
+      end
+    end
     def attendanceEdit
       if  current_user.department == "本部"
       @attendanceEdit = Attendance.find_by(id: params[:id])
