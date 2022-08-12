@@ -25,10 +25,11 @@
     <% end %>
     <th>残業時間</th>
   </thead>
-  <tbody>
+
     <% i = 1%>
     <% @userList.each do |user| %>
     <% totalJob = 0 %>
+    <tbody>
     <td><%= user.name %></td>
     <% a = 1%>
     <% @attendanceData.each do |attendance| %>
@@ -58,10 +59,9 @@
       <td></td>
     <% end %>
     <td><%= totalJob %></td>
-  </tbody>
+    </tbody>
   <% end %>
 
-  </tbody>
 </table>
 
 </div>
