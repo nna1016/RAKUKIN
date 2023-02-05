@@ -1,0 +1,55 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+# =========ローカルと本番切り替え===========
+#    command: bundle exec puma -C config/puma.rb -e production
+    command: bundle exec puma -C config/puma.rb
+# ======================================
+
+    volumes:
+      - .:/rakukin
+      - public-data:/rakukin/public
+      - tmp-data:/rakukin/tmp
+      - log-data:/rakukin/log
+    networks:
+      - rakukin-network
+# =========ローカルと本番切り替え===========
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ******
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ******
+      MYSQL_DATABASE: rakukin_development
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - rakukin-network
+# ======================================
+  web:
+    build:
+      context: ./nginx_docker
+    volumes:
+      - public-data:/rakukin/public
+      - tmp-data:/rakukin/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    networks:
+      - rakukin-network
+
+volumes:
+  public-data:
+  tmp-data:
+  log-data:
+  db-data:
+
+networks:
+  rakukin-network:
+    external: true
